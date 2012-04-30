@@ -55,7 +55,8 @@ class RunnerMark extends Sprite
 		var tilesheet:SparrowTilesheet = new SparrowTilesheet(
 			Assets.getBitmapData("assets/RunnerMark.png"), Assets.getText("assets/RunnerMark.xml"));
 
-		layer = new TileLayer(tilesheet, false, TileLayer.TILE_SCALE | TileLayer.TILE_ALPHA);
+		layer = new TileLayer(tilesheet, false, 
+			TileLayer.TILE_SCALE | TileLayer.TILE_ALPHA /*| TileLayer.TILE_ROTATION*/);
 
 		engine = new RunnerEngine(layer, stageWidth, stageHeight);
 		engine.onComplete = onEngineComplete;

@@ -68,6 +68,7 @@ class TileLayer extends Sprite
 		#if flash
 		group.view.x = gx;
 		group.view.y = gy;
+		var rad2deg = 180 / Math.PI;
 		#end
 
 		for(child in group)
@@ -88,11 +89,36 @@ class TileLayer extends Sprite
 				}
 
 				var sprite:TileSprite = cast child;
+				
 				#if flash
-				sprite.view.x = sprite.x - sprite.size.width * sprite.scale / 2 + gx;
-				sprite.view.y = sprite.y - sprite.size.height * sprite.scale / 2 + gy;
 				sprite.view.scaleX = sprite.view.scaleY = sprite.scale;
 				sprite.view.alpha = sprite.alpha;
+				var tileWidth = sprite.size.width * sprite.scale / 2;
+				var tileHeight = sprite.size.height * sprite.scale / 2;
+				if (offsetRotation > 0)
+				{
+					if (sprite.rotation == 0)
+					{
+						sprite.view.x = sprite.x - tileWidth + gx;
+						sprite.view.y = sprite.y - tileHeight + gy;
+						sprite.view.rotation = 0;
+					}
+					else 
+					{
+						var ca = Math.cos(-sprite.rotation);
+						var sa = Math.sin(-sprite.rotation);
+						var xc = tileWidth * ca, xs = tileWidth * sa, 
+							yc = tileHeight * ca, ys = tileHeight * sa;
+						sprite.view.x = sprite.x - (xc + ys) + gx;
+						sprite.view.y = sprite.y - (-xs + yc) + gy;
+						sprite.view.rotation = sprite.rotation * rad2deg;
+					}
+				}
+				else 
+				{
+					sprite.view.x = sprite.x - tileWidth + gx;
+					sprite.view.y = sprite.y - tileHeight + gy;
+				}
 				#else
 				list[index] = sprite.x + gx;
 				list[index+1] = sprite.y + gy;

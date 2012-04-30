@@ -263,9 +263,8 @@ class RunnerEngine extends Sprite
 			enemy.x -= elapsed * .33;
 			enemy.update();
 			//Loop to other edge of screen
-			if (enemy.x < -enemy.width) {
+			if (enemy.x < -enemy.width)
 				enemy.x = stageWidth + 20;
-			}
 			i--;
 		}
 	}
@@ -284,6 +283,7 @@ class RunnerEngine extends Sprite
 		else
 			runnerScore = fps * 10;
 		
+		runner.rotation += 0.1;
 		updateRunner(elapsed);
 		updateBg(elapsed);
 		if(enemyList != null) updateEnemies(elapsed);
