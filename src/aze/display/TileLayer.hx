@@ -63,13 +63,13 @@ class TileLayer extends Sprite
 		var offsetRGB = drawList.offsetRGB;
 		var offsetAlpha = drawList.offsetAlpha;
 		var elapsed = drawList.elapsed;
-		gx += group.x;
-		gy += group.y;
 		#if flash
 		group.view.x = gx;
 		group.view.y = gy;
 		var rad2deg = 180 / Math.PI;
 		#end
+		gx += group.x;
+		gy += group.y;
 
 		for(child in group)
 		{
@@ -93,8 +93,8 @@ class TileLayer extends Sprite
 				#if flash
 				sprite.view.scaleX = sprite.view.scaleY = sprite.scale;
 				sprite.view.alpha = sprite.alpha;
-				var tileWidth = sprite.size.width * sprite.scale / 2;
-				var tileHeight = sprite.size.height * sprite.scale / 2;
+				var tileWidth = sprite.width / 2;
+				var tileHeight = sprite.height / 2;
 				if (offsetRotation > 0)
 				{
 					if (sprite.rotation == 0)

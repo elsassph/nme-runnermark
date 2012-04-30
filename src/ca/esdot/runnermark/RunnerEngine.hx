@@ -80,12 +80,11 @@ class RunnerEngine extends Sprite
 		sky.width = stageWidth;
 		sky.height = stageHeight;
 		
-		bgStrip1.y = stageHeight - Std.int(bgStrip1.height/2) - 75;
-
-		bgStrip2.y = stageHeight - Std.int(bgStrip2.height/2) - 75;
+		bgStrip1.y = stageHeight - Std.int(bgStrip1.height/2) - 50;
+		bgStrip2.y = stageHeight - Std.int(bgStrip2.height/2) - 50;
 		
 		//Create Runner
-		groundY = Std.int(stageHeight - 75);
+		groundY = Std.int(stageHeight - 50);
 		runner.x = stageWidth * .2;
 		runner.y = groundY - 65;
 		runner.groundY = Std.int(runner.y);

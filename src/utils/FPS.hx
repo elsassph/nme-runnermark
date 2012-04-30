@@ -35,7 +35,7 @@ class FPS extends TextField
       if (visible)
       {
          text = "FPS: " + times.length
-            + "\nscore:" + score;
+            + "\nscore: " + score;
       }
    }
 
