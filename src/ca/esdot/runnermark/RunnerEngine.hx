@@ -277,7 +277,7 @@ class RunnerEngine extends Sprite
 	{
 		steps++;
 
-		if(enemyList.length > 0)
+		if(enemyList.length > 3)
 			runnerScore = targetFPS * 10 + enemyList.length;
 		else
 			runnerScore = fps * 10;
@@ -292,6 +292,12 @@ class RunnerEngine extends Sprite
 		var increment:Int = Lib.getTimer() - lastIncrement;
 		if (fps >= targetFPS && increment > incrementDelay) {
 			addEnemies(Std.int(1 + Math.floor(enemyList.length/50)));
+			lastIncrement = Lib.getTimer();
+		} 
+		else if (fps < targetFPS && enemyList.length < 3 && increment > incrementDelay) {
+			// add 3 enemies even if the device is slow
+			addEnemies(1);
+			incrementDelay = increment + 500;
 			lastIncrement = Lib.getTimer();
 		} 
 		else if (increment > maxIncrement) {

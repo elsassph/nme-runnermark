@@ -102,14 +102,14 @@ class RunnerMark extends Sprite
 		bg.y = Std.int((stageHeight - bg.height)/2);
 		addChild(bg);
 		
-		var tf:TextFormat = new TextFormat("_sans", 40, 0xFFFFFF, true);
+		var tf:TextFormat = new TextFormat("_sans", 48, 0xFFFFFF, true);
 		var score:TextField = new TextField();
 		score.defaultTextFormat = tf;
 		score.text = ""+engine.runnerScore;
 		score.width = 300;
 		score.height = 50;
-		score.x = Std.int(bg.x + (bg.width - score.textWidth));
-		score.y = Std.int(bg.y + (bg.height - score.textHeight));
+		score.x = Std.int(bg.x + (bg.width - score.textWidth) / 2);
+		score.y = Std.int(bg.y + (bg.height - score.textHeight) / 2);
 		addChild(score);
 		
 		stage.addEventListener(MouseEvent.CLICK, onRestartClicked);
