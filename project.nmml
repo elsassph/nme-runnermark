@@ -12,6 +12,7 @@
 	<window orientation="portrait" if="mobile" />-->
 	
 	<window fps="60" />
+	<window fps="62" if="desktop" />
 	
 	<source path="src" />
 	

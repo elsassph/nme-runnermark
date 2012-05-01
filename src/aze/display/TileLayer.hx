@@ -63,13 +63,13 @@ class TileLayer extends Sprite
 		var offsetRGB = drawList.offsetRGB;
 		var offsetAlpha = drawList.offsetAlpha;
 		var elapsed = drawList.elapsed;
+		gx += group.x;
+		gy += group.y;
 		#if flash
 		group.view.x = gx;
 		group.view.y = gy;
 		var rad2deg = 180 / Math.PI;
 		#end
-		gx += group.x;
-		gy += group.y;
 
 		for(child in group)
 		{
@@ -95,29 +95,21 @@ class TileLayer extends Sprite
 				sprite.view.alpha = sprite.alpha;
 				var tileWidth = sprite.width / 2;
 				var tileHeight = sprite.height / 2;
-				if (offsetRotation > 0)
+				if (sprite.rotation == 0)
 				{
-					if (sprite.rotation == 0)
-					{
-						sprite.view.x = sprite.x - tileWidth + gx;
-						sprite.view.y = sprite.y - tileHeight + gy;
-						sprite.view.rotation = 0;
-					}
-					else 
-					{
-						var ca = Math.cos(-sprite.rotation);
-						var sa = Math.sin(-sprite.rotation);
-						var xc = tileWidth * ca, xs = tileWidth * sa, 
-							yc = tileHeight * ca, ys = tileHeight * sa;
-						sprite.view.x = sprite.x - (xc + ys) + gx;
-						sprite.view.y = sprite.y - (-xs + yc) + gy;
-						sprite.view.rotation = sprite.rotation * rad2deg;
-					}
+					sprite.view.x = sprite.x - tileWidth;
+					sprite.view.y = sprite.y - tileHeight;
+					sprite.view.rotation = 0;
 				}
 				else 
 				{
-					sprite.view.x = sprite.x - tileWidth + gx;
-					sprite.view.y = sprite.y - tileHeight + gy;
+					var ca = Math.cos(-sprite.rotation);
+					var sa = Math.sin(-sprite.rotation);
+					var xc = tileWidth * ca, xs = tileWidth * sa, 
+						yc = tileHeight * ca, ys = tileHeight * sa;
+					sprite.view.x = sprite.x - (xc + ys);
+					sprite.view.y = sprite.y - (-xs + yc);
+					sprite.view.rotation = sprite.rotation * rad2deg;
 				}
 				#else
 				list[index] = sprite.x + gx;
