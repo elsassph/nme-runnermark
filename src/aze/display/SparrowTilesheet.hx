@@ -34,7 +34,6 @@ class SparrowTilesheet extends Tilesheet, implements TilesheetEx
 		bmps = new Array<BitmapData>();
 		#end
 
-		var cpt:Int = 0;
 		var ins = new Point(0,0);
 		
 		var x = Xml.parse(xml);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	
-	<meta title="RunnerMark" package="ca.esdot.nme.runnermark" version="1.0.0" company="Example, Inc." />
+	<meta title="RunnerMark" package="aze.nme.RunnerMark" version="1.0.0" company="Philippe.me" />
 	
 	<app main="RunnerMark" file="RunnerMark" path="bin" />
 	
