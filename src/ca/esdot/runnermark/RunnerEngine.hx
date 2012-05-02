@@ -282,7 +282,7 @@ class RunnerEngine extends Sprite
 		else
 			runnerScore = fps * 10;
 		
-		runner.rotation += 0.1;
+		//runner.rotation += 0.1;
 		updateRunner(elapsed);
 		updateBg(elapsed);
 		if(enemyList != null) updateEnemies(elapsed);

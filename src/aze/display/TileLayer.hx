@@ -79,7 +79,9 @@ class TileLayer extends Sprite
 			}
 			else 
 			{
-				if (Std.is(child, TileClip)) 
+				var sprite:TileSprite = cast child;
+				
+				if (sprite.playing && Std.is(sprite, TileClip)) 
 				{
 					var clip:TileClip = cast child;
 					clip.step(elapsed);
@@ -88,8 +90,6 @@ class TileLayer extends Sprite
 					#end
 				}
 
-				var sprite:TileSprite = cast child;
-				
 				#if flash
 				sprite.view.scaleX = sprite.view.scaleY = sprite.scale;
 				sprite.view.alpha = sprite.alpha;
@@ -294,6 +294,7 @@ class TileSprite extends TileBase, implements Public
 	var tile:String;
 	var indice:Int;
 	var size:Rectangle;
+	var playing:Bool;
 
 	var rotation:Float;
 	var scale:Float;
@@ -334,6 +335,7 @@ class TileClip extends TileSprite, implements Public
 	{
 		super(tile);
 		this.fps = fps;
+		this.playing = true;
 	}
 
 	function step(elapsed:Int)
@@ -341,6 +343,9 @@ class TileClip extends TileSprite, implements Public
 		time += elapsed;
 		indice = indices[currentFrame];
 	}
+
+	function play() { playing = true; }
+	function stop() { playing = false; }
 
 	var currentFrame(get_currentFrame, set_currentFrame):Int;
 
