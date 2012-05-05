@@ -13,6 +13,7 @@ Here are the scores:
  - Nexus One (2.3.7): 460 (target 58fps), 490 (target 45fps), 523 (target 30fps)
  - iPad 1: 823
  - iPod Touch 4: 881
+ - iPad 2: 1547
  - [see AIR results][2]
 
 Other point of comparison:
