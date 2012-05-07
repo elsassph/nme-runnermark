@@ -37,7 +37,6 @@ class RunnerEngine extends Sprite
 	var stageHeight:Int;
 	
 	var steps:Int;
-	var startTime:Int;
 	var groundY:Int;
 	var lastGroundPiece:TileSprite;
 	
@@ -46,7 +45,7 @@ class RunnerEngine extends Sprite
 	var lastIncrement:Int;
 	
 	public var fps:Int;
-	public var targetFPS:Int;
+	static public var targetFPS:Int;
 	
 	var _runnerScore:Int;
 
@@ -61,7 +60,7 @@ class RunnerEngine extends Sprite
 
 		lastIncrement = Lib.getTimer() + 2000;
 		fps = -1;
-		targetFPS = 58;
+		steps = 0;
 		runnerScore = 0;
 		incrementDelay = 250;
 		maxIncrement = 12000;
@@ -279,7 +278,7 @@ class RunnerEngine extends Sprite
 
 		if(enemyList.length > 3)
 			runnerScore = targetFPS * 10 + enemyList.length;
-		else
+		else if (fps > 0)
 			runnerScore = fps * 10;
 		
 		//runner.rotation += 0.1;
@@ -373,7 +372,8 @@ class RunnerEngine extends Sprite
 		var rect:Sprite = new Sprite();
 		rect.graphics.beginGradientFill(GradientType.LINEAR, [0x0, 0x1E095E], [1, .5], [0, 255], m);
 		rect.graphics.drawRect(0, 0, 128, 128);
-		var skyData:BitmapData = new BitmapData(128, 128, false, 0x0);
+		var col = #if neko {rgb:0, a:0 } #else 0 #end;
+		var skyData:BitmapData = new BitmapData(128, 128, false, col);
 		skyData.draw(rect);
 		return skyData;
 	}

@@ -38,8 +38,6 @@ class RunnerMark extends Sprite
 	
 	function init():Void 
 	{
-		addEventListener(Event.ENTER_FRAME, onEnterFrame);
-		
 		stageWidth = stage.stageWidth;
 		stageHeight = stage.stageHeight;
 		#if iphone
@@ -56,7 +54,9 @@ class RunnerMark extends Sprite
 			Assets.getBitmapData("assets/RunnerMark.png"), Assets.getText("assets/RunnerMark.xml"));
 
 		layer = new TileLayer(tilesheet, false, 
-			TileLayer.TILE_SCALE | TileLayer.TILE_ALPHA /*| TileLayer.TILE_ROTATION*/);
+			TileLayer.TILE_SCALE | TileLayer.TILE_ALPHA);
+
+		RunnerEngine.targetFPS = 30; // score = FPS*10 + ennemies.length
 
 		engine = new RunnerEngine(layer, stageWidth, stageHeight);
 		engine.onComplete = onEngineComplete;
@@ -64,10 +64,11 @@ class RunnerMark extends Sprite
 
 		prevTime = Lib.getTimer();
 		createStats();
+		addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 	
 	function onEnterFrame(event:Event):Void 
-	{	
+	{
 		var elapsed:Float = Lib.getTimer() - prevTime;
 		prevTime = Lib.getTimer();
 		

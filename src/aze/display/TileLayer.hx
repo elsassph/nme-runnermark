@@ -336,6 +336,7 @@ class TileClip extends TileSprite, implements Public
 		super(tile);
 		this.fps = fps;
 		this.playing = true;
+		time = 0;
 	}
 
 	function step(elapsed:Int)
@@ -377,6 +378,7 @@ class DrawList implements Public
 	{
 		list = new Array<Float>();
 		fields = 3;
+		elapsed = 0;
 		if ((flags & TileLayer.TILE_SCALE) > 0) { offsetScale = fields; fields++; }
 		else offsetScale = 0;
 		if ((flags & TileLayer.TILE_ROTATION) > 0) { offsetRotation = fields; fields++; }
