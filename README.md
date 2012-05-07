@@ -17,6 +17,7 @@ Here are the scores (FPS*10 + ennemies count):
  - Nexus One (2.3.7): 460 (target 58fps), 490 (target 45fps), 523 (target 30fps)
  - Samsung Galaxy S: 584 (target 58fps), 1000 (40fps), 1073 (30fps)
  - HTC Desire Z (2.3): 869
+ - Galaxy Nexus: 909
  - Samsung Galaxy S2 (ICS): 1944
  - Galaxy Tab 10.1 (3.1, 1.4GHz): 689
  - [Compare with AIR RunnerMark results][2]
