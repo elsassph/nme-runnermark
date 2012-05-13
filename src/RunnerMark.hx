@@ -47,8 +47,8 @@ class RunnerMark extends Sprite
 			Lib.current.scaleX = Lib.current.scaleY = 0.5;
 		}
 		if (stageWidth > 1024) { // iPad retina
-			stageWidth /= 2;
-			stageHeight /= 2;
+			stageWidth = cast stageWidth / 2;
+			stageHeight = cast stageHeight / 2;
 			Lib.current.scaleX = Lib.current.scaleY = 2;
 		}
 		#elseif flash

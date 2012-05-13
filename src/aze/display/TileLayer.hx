@@ -51,7 +51,6 @@ class TileLayer extends Sprite
 		renderGroup(dom, 0, 0, 0);
 		drawList.end();
 		#if (flash||js)
-		// TODO additive mode
 		addChild(dom.view);
 		#else
 		graphics.clear();
@@ -72,7 +71,6 @@ class TileLayer extends Sprite
 		#if (flash||js)
 		group.view.x = gx;
 		group.view.y = gy;
-		var rad2deg = 180 / Math.PI;
 		var blend = useAdditive ? BlendMode.ADD : BlendMode.NORMAL;
 		#end
 
@@ -95,6 +93,7 @@ class TileLayer extends Sprite
 				sprite.view.transform.matrix = m;
 				sprite.view.blendMode = blend;
 				sprite.view.alpha = sprite.alpha;
+				// TODO apply tint
 
 				#else
 				list[index] = sprite.x + gx;
@@ -288,6 +287,7 @@ class TileSprite extends TileBase
 	var _scaleX:Float;
 	var _scaleY:Float;
 	var _mirror:Int;
+
 	#if (cpp||neko)
 	var _transform:Array<Float>;
 	#else
@@ -412,9 +412,8 @@ class TileSprite extends TileBase
 		}
 		return _transform;
 	}
-	#end
 
-	#if (flash||js)
+	#else
 	public var matrix(get_matrix, null):Matrix;
 	function get_matrix():Matrix 
 	{ 
