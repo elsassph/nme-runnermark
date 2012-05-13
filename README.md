@@ -34,9 +34,9 @@ Other point of comparison:
 
 Second goal was to create a simple wrapper on haxe NME's Tilesheet which is rather low-level and native-targets orientated. 
 
- - provides a basic display-list and spritesheet animations,
+ - provides a basic display-list, spritesheet animations, mirroring,
  - includes a Sparrow spritesheet parser, supporting trimming,
- - uses Bitmaps for Flash target rendering (WIP) instead of the limited, and a bit slow, drawTriangles fallback.
+ - uses Bitmaps for Flash & HTML5 target rendering (almost complete) instead of the limited, and a bit slow, drawTriangles fallback.
 
 [1]:https://github.com/esDotDev/RunnerMark
 [2]:https://github.com/esDotDev/RunnerMark/tree/master/results
