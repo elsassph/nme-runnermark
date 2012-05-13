@@ -1,8 +1,10 @@
 package aze.display;
 
+import flash.geom.Matrix;
 import haxe.Public;
 import nme.display.Bitmap;
 import nme.display.BitmapData;
+import nme.display.BlendMode;
 import nme.display.DisplayObject;
 import nme.display.Graphics;
 import nme.display.Sprite;
@@ -17,40 +19,43 @@ import nme.Lib;
  */
 class TileLayer extends Sprite
 {
-	public static inline var TILE_SCALE = 0x0001;
-	public static inline var TILE_ROTATION = 0x0002;
-	public static inline var TILE_RGB = 0x0004;
-	public static inline var TILE_ALPHA = 0x0008;
-
 	public var dom:TileGroup;
+	public var useSmoothing:Bool;
+	public var useAdditive:Bool;
+	public var useAlpha:Bool;
+	public var useTransforms:Bool;
+	public var useTint:Bool;
 
-	var smooth:Bool;
-	var flags:Int;
-	var tilesheet:TilesheetEx;
+	public var tilesheet:TilesheetEx;
 	var drawList:DrawList;
 
-	public function new(tilesheet:TilesheetEx, smooth:Bool, flags:Int = 0)
+	public function new(tilesheet:TilesheetEx, smooth:Bool=false, additive:Bool=false)
 	{
 		super();
-		this.tilesheet = tilesheet;
-		this.smooth = smooth;
-		this.flags = flags;
-		dom = new TileGroup();
-		dom.tilesheet = tilesheet;
-		drawList = new DrawList(flags);
 		mouseChildren = false;
+
+		this.tilesheet = tilesheet;
+		useSmoothing = smooth;
+		useAdditive = additive;
+		useAlpha = true;
+		useTransforms = true;
+
+		dom = new TileGroup();
+		dom.init(this);
+		drawList = new DrawList();
 	}
 
 	public function render()
 	{
-		drawList.begin();
+		drawList.begin(useTransforms, useAlpha, useTint, useAdditive);
 		renderGroup(dom, 0, 0, 0);
 		drawList.end();
-		#if flash
+		#if (flash||js)
+		// TODO additive mode
 		addChild(dom.view);
 		#else
 		graphics.clear();
-		tilesheet.drawTiles(graphics, drawList.list, true, flags);
+		tilesheet.drawTiles(graphics, drawList.list, useSmoothing, drawList.flags);
 		#end
 	}
 
@@ -58,17 +63,17 @@ class TileLayer extends Sprite
 	{
 		var list = drawList.list;
 		var fields = drawList.fields;
-		var offsetScale = drawList.offsetScale;
-		var offsetRotation = drawList.offsetRotation;
+		var offsetTransform = drawList.offsetTransform;
 		var offsetRGB = drawList.offsetRGB;
 		var offsetAlpha = drawList.offsetAlpha;
 		var elapsed = drawList.elapsed;
 		gx += group.x;
 		gy += group.y;
-		#if flash
+		#if (flash||js)
 		group.view.x = gx;
 		group.view.y = gy;
 		var rad2deg = 180 / Math.PI;
+		var blend = useAdditive ? BlendMode.ADD : BlendMode.NORMAL;
 		#end
 
 		for(child in group)
@@ -80,43 +85,28 @@ class TileLayer extends Sprite
 			else 
 			{
 				var sprite:TileSprite = cast child;
-				
-				if (sprite.playing && Std.is(sprite, TileClip)) 
-				{
-					var clip:TileClip = cast child;
-					clip.step(elapsed);
-					#if flash
-					cast(clip.view, Bitmap).bitmapData = tilesheet.getBitmap(clip.indice);
-					#end
-				}
+				if (sprite.animated) sprite.step(elapsed);
 
-				#if flash
-				sprite.view.scaleX = sprite.view.scaleY = sprite.scale;
+				#if (flash||js)
+				var m = sprite.view.transform.matrix;
+				m.identity();
+				m.concat(sprite.matrix);
+				m.translate(sprite.x, sprite.y);
+				sprite.view.transform.matrix = m;
+				sprite.view.blendMode = blend;
 				sprite.view.alpha = sprite.alpha;
-				var tileWidth = sprite.width / 2;
-				var tileHeight = sprite.height / 2;
-				if (sprite.rotation == 0)
-				{
-					sprite.view.x = sprite.x - tileWidth;
-					sprite.view.y = sprite.y - tileHeight;
-					sprite.view.rotation = 0;
-				}
-				else 
-				{
-					var ca = Math.cos(-sprite.rotation);
-					var sa = Math.sin(-sprite.rotation);
-					var xc = tileWidth * ca, xs = tileWidth * sa, 
-						yc = tileHeight * ca, ys = tileHeight * sa;
-					sprite.view.x = sprite.x - (xc + ys);
-					sprite.view.y = sprite.y - (-xs + yc);
-					sprite.view.rotation = sprite.rotation * rad2deg;
-				}
+
 				#else
 				list[index] = sprite.x + gx;
 				list[index+1] = sprite.y + gy;
 				list[index+2] = sprite.indice;
-				if (offsetScale > 0) list[index+offsetScale] = sprite.scale;
-				if (offsetRotation > 0) list[index+offsetRotation] = sprite.rotation;
+				if (offsetTransform > 0) {
+					var t = sprite.transform;
+					list[index+offsetTransform] = t[0];
+					list[index+offsetTransform+1] = t[1];
+					list[index+offsetTransform+2] = t[2];
+					list[index+offsetTransform+3] = t[3];
+				}
 				if (offsetRGB > 0) {
 					list[index+offsetRGB] = sprite.r;
 					list[index+offsetRGB+1] = sprite.g;
@@ -134,17 +124,23 @@ class TileLayer extends Sprite
 
 class TileBase implements Public
 {
-	var tilesheet:TilesheetEx;
+	var layer:TileLayer;
 	var parent:TileGroup;
 	var x:Float;
 	var y:Float;
-	#if flash
+	#if (flash||js)
 	var view:DisplayObject;
 	#end
 
 	function new()
 	{
 		x = y = 0;
+	}
+
+	function init(layer:TileLayer):Void
+	{
+		this.layer = layer;
+		// override to init
 	}
 }
 
@@ -156,31 +152,22 @@ class TileGroup extends TileBase, implements Public
 	{
 		super();
 		children = new Array<TileBase>();
-		#if flash
+		#if (flash||js)
 		view = new Sprite();
 		#end
+	}
+
+	override function init(layer:TileLayer):Void
+	{
+		this.layer = layer;
+		initChildren();
 	}
 
 	function initChild(item:TileBase)
 	{
 		item.parent = this;
-		if (tilesheet != null && item.tilesheet == null) 
-		{
-			item.tilesheet = tilesheet;
-			if (Std.is(item, TileSprite))
-			{
-				var sprite:TileSprite = cast item;
-				var indices = tilesheet.getAnim(sprite.tile);
-				if (Std.is(item, TileClip))
-					cast(sprite, TileClip).indices = indices;
-				sprite.indice = indices[0];
-				sprite.size = tilesheet.getSize(sprite.indice);
-				#if flash
-				cast(sprite.view, Bitmap).bitmapData = tilesheet.getBitmap(sprite.indice);
-				#end
-			}
-			else cast(item, TileGroup).initChildren();
-		}
+		if (layer != null && item.layer == null) 
+			item.init(layer);
 	}
 
 	function initChildren()
@@ -196,7 +183,7 @@ class TileGroup extends TileBase, implements Public
 
 	function addChild(item:TileBase)
 	{
-		#if flash
+		#if (flash||js)
 		cast(view, Sprite).addChild(item.view);
 		#end
 		removeChild(item);
@@ -206,7 +193,7 @@ class TileGroup extends TileBase, implements Public
 
 	function addChildAt(item:TileBase, index:Int)
 	{
-		#if flash
+		#if (flash||js)
 		cast(view, Sprite).addChildAt(item.view, index);
 		#end
 		removeChild(item);
@@ -225,7 +212,7 @@ class TileGroup extends TileBase, implements Public
 		var index = indexOf(item);
 		if (index >= 0) 
 		{
-			#if flash
+			#if (flash||js)
 			cast(view, Sprite).removeChild(item.view);
 			#end
 			children.splice(index, 1);
@@ -236,7 +223,7 @@ class TileGroup extends TileBase, implements Public
 
 	function removeChildAt(index:Int)
 	{
-		#if flash
+		#if (flash||js)
 		cast(view, Sprite).removeChildAt(index);
 		#end
 		var res = children.splice(index, 1);
@@ -289,39 +276,182 @@ class TileGroup extends TileBase, implements Public
 	}
 }
 
-class TileSprite extends TileBase, implements Public
+class TileSprite extends TileBase
 {
-	var tile:String;
+	public var tile:String;
 	var indice:Int;
 	var size:Rectangle;
-	var playing:Bool;
+	var animated:Bool;
 
-	var rotation:Float;
-	var scale:Float;
-	var alpha:Float;
-	var r:Float;
-	var g:Float;
-	var b:Float;
+	var dirty:Bool;
+	var _rotation:Float;
+	var _scaleX:Float;
+	var _scaleY:Float;
+	var _mirror:Int;
+	#if (cpp||neko)
+	var _transform:Array<Float>;
+	#else
+	var _matrix:Matrix;
+	#end
+
+	public var alpha:Float;
+	public var r:Float;
+	public var g:Float;
+	public var b:Float;
 
 	function new(tile:String) 
 	{
 		super();
-		rotation = 0;
-		alpha = scale = 1;
+		_rotation = 0;
+		alpha = _scaleX = _scaleY = 1;
+		dirty = true;
 		this.tile = tile;
-		#if flash
+		#if (flash||js)
 		view = new Bitmap();
+		view.y = -9999;
 		#end
 	}
 
-	var height(get_height, null):Float;
-	inline function get_height():Float {
-		return size.height * scale;
+	override function init(layer:TileLayer):Void
+	{
+		this.layer = layer;
+		var indices = layer.tilesheet.getAnim(tile);
+		setIndice(indices[0]);
+		size = layer.tilesheet.getSize(indice);
 	}
 
-	var width(get_width, null):Float;
+	function setIndice(index:Int)
+	{
+		indice = index;
+		#if (flash||js)
+		var bmp = cast(view, Bitmap);
+		bmp.bitmapData = layer.tilesheet.getBitmap(index);
+		bmp.smoothing = layer.useSmoothing;
+		#end
+	}
+
+	function step(elapsed:Int)
+	{
+		// to be overriden
+	}
+
+	public var mirror(get_mirror, set_mirror):Int;
+	inline function get_mirror():Int { return _mirror; }
+	function set_mirror(value:Int):Int 
+	{
+		if (_mirror != value) {
+			_mirror = value;
+			dirty = true;
+		}
+		return value;
+	}
+
+	public var rotation(get_rotation, set_rotation):Float;	
+	inline function get_rotation():Float { return _rotation; }
+	function set_rotation(value:Float):Float 
+	{
+		if (_rotation != value) {
+			_rotation = value;
+			dirty = true;
+		}
+		return value;
+	}
+
+	public var scale(get_scale, set_scale):Float;
+	inline function get_scale():Float {
+		return _scaleX;
+	}
+	function set_scale(value:Float):Float {
+		if (_scaleX != value) {
+			_scaleX = _scaleY = value;
+			dirty = true;
+		}
+		return value;
+	}
+
+	public var scaleX(get_scale, set_scale):Float;
+	inline function get_scaleX():Float {
+		return _scaleX;
+	}
+	function set_scaleX(value:Float):Float {
+		if (_scaleX != value) {
+			_scaleX = value;
+			dirty = true;
+		}
+		return value;
+	}
+
+	public var scaleY(get_scale, set_scale):Float;
+	inline function get_scaleY():Float {
+		return _scaleY;
+	}
+	function set_scaleY(value:Float):Float {
+		if (_scaleY != value) {
+			_scaleY = value;
+			dirty = true;
+		}
+		return value;
+	}
+
+	#if (cpp||neko)
+	public var transform(get_transform, null):Array<Float>;
+	function get_transform():Array<Float>
+	{
+		if (_transform == null) _transform = new Array<Float>();
+		if (dirty) 
+		{
+			dirty = false;
+			var dirX:Int = mirror == 1 ? -1 : 1;
+			var dirY:Int = mirror == 2 ? -1 : 1;
+			var cos = Math.cos(-rotation);
+			var sin = Math.sin(-rotation);
+			_transform[0] = dirX * cos * scaleX;
+			_transform[1] = dirX * sin * scaleY;
+			_transform[2] = -dirY * sin * scaleX;
+			_transform[3] = dirY * cos *_scaleY;
+		}
+		return _transform;
+	}
+	#end
+
+	#if (flash||js)
+	public var matrix(get_matrix, null):Matrix;
+	function get_matrix():Matrix 
+	{ 
+		if (_matrix == null) _matrix = new Matrix();
+		if (dirty)
+		{
+			dirty = false;
+			var tileWidth = width / 2;
+			var tileHeight = height / 2;
+			var m = _matrix;
+			m.identity();
+			if (layer.useTransforms) {
+				m.scale(scaleX, scaleY);
+				if (rotation != 0) {
+					m.translate(-tileWidth, -tileHeight);
+					m.rotate(rotation);
+					m.translate(tileWidth, tileHeight);
+				}
+				if (mirror != 0) {
+					if (mirror == 1) { m.scale(-1, 1); m.translate(tileWidth * 2, 0); }
+					else if (mirror == 2) { m.scale(1, -1); m.translate(0, tileHeight * 2); }
+				}
+			}
+			m.translate(-tileWidth, -tileHeight);
+		}
+		return _matrix;
+	}
+	#end
+
+	public var height(get_height, null):Float;
+	inline function get_height():Float {
+		return size.height * _scaleY;
+	}
+
+	public var width(get_width, null):Float;
 	inline function get_width():Float {
-		return size.width * scale;
+		return size.width * _scaleX;
 	}
 }
 
@@ -335,18 +465,26 @@ class TileClip extends TileSprite, implements Public
 	{
 		super(tile);
 		this.fps = fps;
-		this.playing = true;
+		this.animated = true;
 		time = 0;
 	}
 
-	function step(elapsed:Int)
+	override function init(layer:TileLayer):Void
 	{
-		time += elapsed;
-		indice = indices[currentFrame];
+		this.layer = layer;
+		indices = layer.tilesheet.getAnim(tile);
+		setIndice(indices[0]);
+		size = layer.tilesheet.getSize(indice);
 	}
 
-	function play() { playing = true; }
-	function stop() { playing = false; }
+	override function step(elapsed:Int)
+	{
+		time += elapsed;
+		setIndice(indices[currentFrame]);
+	}
+
+	function play() { animated = true; }
+	function stop() { animated = false; }
 
 	var currentFrame(get_currentFrame, set_currentFrame):Int;
 
@@ -367,30 +505,45 @@ class DrawList implements Public
 	var list:Array<Float>;
 	var index:Int;
 	var fields:Int;
-	var offsetScale:Int;
-	var offsetRotation:Int;
+	var offsetTransform:Int;
 	var offsetRGB:Int;
 	var offsetAlpha:Int;
+	var flags:Int;
 	var time:Int;
 	var elapsed:Int;
 
-	function new(flags:Int) 
+	function new() 
 	{
 		list = new Array<Float>();
-		fields = 3;
 		elapsed = 0;
-		if ((flags & TileLayer.TILE_SCALE) > 0) { offsetScale = fields; fields++; }
-		else offsetScale = 0;
-		if ((flags & TileLayer.TILE_ROTATION) > 0) { offsetRotation = fields; fields++; }
-		else offsetRotation = 0;
-		if ((flags & TileLayer.TILE_RGB) > 0) { offsetRGB = fields; fields+=3; }
-		else offsetRGB = 0;
-		if ((flags & TileLayer.TILE_ALPHA) > 0) { offsetAlpha = fields; fields++; }
-		else offsetAlpha = 0;
 	}
 
-	function begin() 
+	function begin(useTransforms:Bool, useAlpha:Bool, useTint:Bool, useAdditive:Bool) 
 	{
+		#if (cpp||neko)
+		flags = 0;
+		fields = 3;
+		if (useTransforms) {
+			offsetTransform = fields;
+			fields += 4;
+			flags |= neash.display.Graphics.TILE_TRANS_2x2;
+		}
+		else offsetTransform = 0;
+		if (useTint) {
+			offsetRGB = fields; 
+			fields+=3; 
+			flags |= neash.display.Graphics.TILE_RGB;
+		}
+		else offsetRGB = 0;
+		if (useAlpha) {
+			offsetAlpha = fields; 
+			fields++; 
+			flags |= neash.display.Graphics.TILE_ALPHA;
+		}
+		else offsetAlpha = 0;
+		if (useAdditive) flags |= neash.display.Graphics.TILE_BLEND_ADD;
+		#end
+
 		index = 0;
 		if (time > 0) {
 			var t = Lib.getTimer();
@@ -411,9 +564,11 @@ interface TilesheetEx
 {
 	function getAnim(name:String):Array<Int>;
 	function getSize(indice:Int):nme.geom.Rectangle;
-	#if flash
+
+	#if (flash||js)
 	function getBitmap(indice:Int):BitmapData;
-	#end
+	#else
 	function drawTiles(graphics:Graphics, tileData:Array<Float>, smooth:Bool = false, flags:Int = 0):Void;
+	#end
 }
 

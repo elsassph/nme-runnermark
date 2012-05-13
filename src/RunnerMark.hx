@@ -41,10 +41,15 @@ class RunnerMark extends Sprite
 		stageWidth = stage.stageWidth;
 		stageHeight = stage.stageHeight;
 		#if iphone
-		if (stageWidth < 960) {
+		if (stageWidth < 960) { // iPhone classic
 			stageWidth *= 2;
 			stageHeight *= 2;
 			Lib.current.scaleX = Lib.current.scaleY = 0.5;
+		}
+		if (stageWidth > 1024) { // iPad retina
+			stageWidth /= 2;
+			stageHeight /= 2;
+			Lib.current.scaleX = Lib.current.scaleY = 2;
 		}
 		#elseif flash
 		stage.quality = nme.display.StageQuality.LOW;
@@ -53,10 +58,9 @@ class RunnerMark extends Sprite
 		var tilesheet:SparrowTilesheet = new SparrowTilesheet(
 			Assets.getBitmapData("assets/RunnerMark.png"), Assets.getText("assets/RunnerMark.xml"));
 
-		layer = new TileLayer(tilesheet, false, 
-			TileLayer.TILE_SCALE | TileLayer.TILE_ALPHA);
+		layer = new TileLayer(tilesheet);
 
-		RunnerEngine.targetFPS = 30; // score = FPS*10 + ennemies.length
+		RunnerEngine.targetFPS = 58; // score = FPS*10 + ennemies.length
 
 		engine = new RunnerEngine(layer, stageWidth, stageHeight);
 		engine.onComplete = onEngineComplete;

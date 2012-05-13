@@ -7,6 +7,8 @@ class RunnerSprite extends GenericSprite
 	public function new(type:String) 
 	{
 		super(type);
+		//mirror = 1;
+		//scale = 2;
 	}
 	
 	public function update():Void 

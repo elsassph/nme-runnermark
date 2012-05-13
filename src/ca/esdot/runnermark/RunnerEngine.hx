@@ -178,7 +178,8 @@ class RunnerEngine extends Sprite
 		var sprite:EnemySprite = cast getSprite("Enemy");
 		if (sprite == null)
 			sprite = new EnemySprite("Enemy");
-		
+		sprite.scale = 0.6 + 0.4 * Math.random();
+		sprite.mirror = Math.random() > 0.5 ? 1 : 0;
 		_root.addChildAt(sprite, _root.getChildIndex(runner) - 1);
 		return sprite;
 	}
@@ -281,7 +282,7 @@ class RunnerEngine extends Sprite
 		else if (fps > 0)
 			runnerScore = fps * 10;
 		
-		//runner.rotation += 0.1;
+		runner.rotation += 0.1;
 		updateRunner(elapsed);
 		updateBg(elapsed);
 		if(enemyList != null) updateEnemies(elapsed);
