@@ -7,6 +7,7 @@ First goal was to do a haxe NME port of [esDotDev's RunnerMark][1] for fair comp
 
 Minor twists: 
 - shows 3 enemies even if it can't reach 58fps,
+- runner is rotating, enemies are randomly scaled & flipped,
 - for older Android devices you should not target 60fps; my HTC Desire (Nexus One) does a good job with lower targets.
 
 Here are the scores (FPSx10 + ennemies count, **in bold after engine update**):
