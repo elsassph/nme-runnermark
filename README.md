@@ -19,11 +19,13 @@ Here are the scores (FPSx10 + ennemies count, **in bold after engine update**):
  - Nexus One (2.3.7): **470** (target 58fps), **577** (30fps)
  - Motorola Defy: 595 (target 30fps)
  - Samsung Galaxy Ace: 850 (target 30fps)
- - Samsung Galaxy S: 584 (target 58fps), 1000 (40fps), 1073 (30fps)
+ - Samsung Galaxy S: 584 (target 58fps), 1073 (30fps)
  - HTC Desire Z (2.3): 869
  - Galaxy Nexus: 909
- - Samsung Galaxy S2 (ICS): 1944
+ - Samsung Galaxy S2 (ICS): **1972**
  - Galaxy Tab 10.1 (3.1, 1.4GHz): 689
+ - Xoom (3.1): **923**
+ - TouchPad (ICS): **916**
  - [Compare with AIR RunnerMark results][2]
  - [Download the APKs][3]
 
