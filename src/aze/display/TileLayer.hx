@@ -369,7 +369,7 @@ class TileSprite extends TileBase
 		return value;
 	}
 
-	public var scaleX(get_scale, set_scale):Float;
+	public var scaleX(get_scaleX, set_scaleX):Float;
 	inline function get_scaleX():Float {
 		return _scaleX;
 	}
@@ -381,7 +381,7 @@ class TileSprite extends TileBase
 		return value;
 	}
 
-	public var scaleY(get_scale, set_scale):Float;
+	public var scaleY(get_scaleY, set_scaleY):Float;
 	inline function get_scaleY():Float {
 		return _scaleY;
 	}
@@ -403,12 +403,20 @@ class TileSprite extends TileBase
 			dirty = false;
 			var dirX:Int = mirror == 1 ? -1 : 1;
 			var dirY:Int = mirror == 2 ? -1 : 1;
-			var cos = Math.cos(-rotation);
-			var sin = Math.sin(-rotation);
-			_transform[0] = dirX * cos * scaleX;
-			_transform[1] = dirX * sin * scaleY;
-			_transform[2] = -dirY * sin * scaleX;
-			_transform[3] = dirY * cos *_scaleY;
+			if (rotation != 0) {
+				var cos = Math.cos(-rotation);
+				var sin = Math.sin(-rotation);
+				_transform[0] = dirX * cos * scaleX;
+				_transform[1] = dirX * sin * scaleY;
+				_transform[2] = -dirY * sin * scaleX;
+				_transform[3] = dirY * cos * _scaleY;
+			}
+			else {
+				_transform[0] = dirX * scaleX;
+				_transform[1] = 0;
+				_transform[2] = 0;
+				_transform[3] = dirY * _scaleY;
+			}
 		}
 		return _transform;
 	}
