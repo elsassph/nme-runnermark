@@ -8,11 +8,12 @@ import nme.Assets;
 import nme.display.Bitmap;
 import nme.display.Sprite;
 import nme.display.StageAlign;
-import nme.display.StageQuality;
 import nme.display.StageScaleMode;
 import nme.events.Event;
 import nme.events.MouseEvent;
 import nme.Lib;
+import nme.net.URLLoader;
+import nme.net.URLRequest;
 import nme.text.TextField;
 import nme.text.TextFormat;
 
@@ -55,6 +56,11 @@ class RunnerMark extends Sprite
 		stage.quality = nme.display.StageQuality.LOW;
 		#end
 
+		createScene();
+	}
+
+	function createScene()
+	{
 		var tilesheet:SparrowTilesheet = new SparrowTilesheet(
 			Assets.getBitmapData("assets/RunnerMark.png"), Assets.getText("assets/RunnerMark.xml"));
 
@@ -88,7 +94,7 @@ class RunnerMark extends Sprite
 	function restartEngine():Void
 	{
 		while(numChildren > 0) removeChildAt(0);
-		init();
+		createScene();
 	}
 	
 	function createStats():Void 
@@ -129,7 +135,6 @@ class RunnerMark extends Sprite
 	static public function main()
 	{
 		var stage = Lib.current.stage;
-		stage.quality = StageQuality.LOW;
 		stage.align = StageAlign.TOP_LEFT;
 		stage.scaleMode = StageScaleMode.NO_SCALE;
 

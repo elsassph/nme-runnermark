@@ -183,7 +183,8 @@ class TileGroup extends TileBase, implements Public
 	function addChild(item:TileBase)
 	{
 		#if (flash||js)
-		cast(view, Sprite).addChild(item.view);
+		var sprite:Sprite = cast view;
+		sprite.addChild(item.view);
 		#end
 		removeChild(item);
 		initChild(item);
@@ -193,7 +194,8 @@ class TileGroup extends TileBase, implements Public
 	function addChildAt(item:TileBase, index:Int)
 	{
 		#if (flash||js)
-		cast(view, Sprite).addChildAt(item.view, index);
+		var sprite:Sprite = cast view;
+		sprite.addChildAt(item.view, index);
 		#end
 		removeChild(item);
 		initChild(item);
@@ -212,7 +214,8 @@ class TileGroup extends TileBase, implements Public
 		if (index >= 0) 
 		{
 			#if (flash||js)
-			cast(view, Sprite).removeChild(item.view);
+			var sprite:Sprite = cast view;
+			sprite.removeChild(item.view);
 			#end
 			children.splice(index, 1);
 			item.parent = null;
@@ -223,7 +226,8 @@ class TileGroup extends TileBase, implements Public
 	function removeChildAt(index:Int)
 	{
 		#if (flash||js)
-		cast(view, Sprite).removeChildAt(index);
+		var sprite:Sprite = cast view;
+		sprite.removeChildAt(index);
 		#end
 		var res = children.splice(index, 1);
 		res[0].parent = null;
@@ -247,7 +251,7 @@ class TileGroup extends TileBase, implements Public
 		var ymin = 9999.0, ymax = -9999.0;
 		for(child in children)
 			if (Std.is(child, TileSprite)) {
-				var sprite = cast(child, TileSprite);
+				var sprite:TileSprite = cast child;
 				var h = sprite.height;
 				var top = sprite.y - h/2;
 				var bottom = top + h;
@@ -264,7 +268,7 @@ class TileGroup extends TileBase, implements Public
 		var xmin = 9999.0, xmax = -9999.0;
 		for(child in children)
 			if (Std.is(child, TileSprite)) {
-				var sprite = cast(child, TileSprite);
+				var sprite:TileSprite = cast child;
 				var w = sprite.width;
 				var left = sprite.x - w/2;
 				var right = left + w;
@@ -324,7 +328,7 @@ class TileSprite extends TileBase
 	{
 		indice = index;
 		#if (flash||js)
-		var bmp = cast(view, Bitmap);
+		var bmp:Bitmap = cast view;
 		bmp.bitmapData = layer.tilesheet.getBitmap(index);
 		bmp.smoothing = layer.useSmoothing;
 		#end

@@ -8,8 +8,6 @@
 	<window background="#000000" />
 	<window width="800" height="480" unless="mobile" />
 	<window orientation="landscape" vsync="true" if="mobile" />
-	<!--<window width="480" height="800" unless="mobile" />
-	<window orientation="portrait" if="mobile" />-->
 	
 	<window fps="60" />
 	<window fps="62" if="desktop" />
@@ -26,5 +24,9 @@
 	<ndll name="regexp" />
 	<ndll name="zlib" />
 	<ndll name="nme" haxelib="nme" />
+
+	<!-- optimize JS output -->
+	<haxeflag name="--dead-code-elimination" if="html5" />
+	<haxeflag name="--js-modern" if="html5" />
 	
 </project>
