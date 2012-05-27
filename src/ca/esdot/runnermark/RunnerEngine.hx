@@ -56,7 +56,7 @@ class RunnerEngine extends Sprite
 		super();
 		
 		this.layer = layer;
-		_root = layer.dom;
+		_root = layer;
 
 		lastIncrement = Lib.getTimer() + 2000;
 		fps = -1;
@@ -96,7 +96,7 @@ class RunnerEngine extends Sprite
 		addParticles(32);
 
 		// add tile layer
-		addChild(layer);
+		addChild(layer.view);
 	}
 
 	public var runnerScore(get_runnerScore, set_runnerScore):Int;

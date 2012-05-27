@@ -8,6 +8,7 @@ import nme.events.Event;
 class FPS extends TextField
 {
    public var fps:Int;
+   var prev:Int;
    public var score:Int;
    var times:Array<Float>;
 
@@ -18,7 +19,8 @@ class FPS extends TextField
       y = inY;
       selectable = false;
       defaultTextFormat = new TextFormat("_sans", 20, inCol, true);
-      text = "FPS:";
+      htmlText = "FPS:";
+      multiline = true;
       width = 150;
       times = [];
       addEventListener(Event.ENTER_FRAME, onEnter);
@@ -32,10 +34,11 @@ class FPS extends TextField
          times.shift();
       fps = times.length;
       
-      if (visible)
+      if (visible && prev != fps)
       {
-         text = "FPS: " + times.length
-            + "\nscore: " + score;
+         prev = fps;
+         htmlText = "FPS: " + fps
+            + "<br/>score: " + score;
       }
    }
 

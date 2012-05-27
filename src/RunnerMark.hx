@@ -22,6 +22,7 @@ class RunnerMark extends Sprite
 	var prevTime:Int;
 	var engine:RunnerEngine;
 
+	var sheetData:String;
 	var layer:TileLayer;
 
 	var isMouseDown:Bool;
@@ -56,13 +57,26 @@ class RunnerMark extends Sprite
 		stage.quality = nme.display.StageQuality.LOW;
 		#end
 
+		#if js
+		// workaround for binary data loading bug in html5
+		var ul:URLLoader = new URLLoader(new URLRequest("assets/RunnerMark.xml")); 
+		ul.addEventListener(Event.COMPLETE, ul_complete);
+		#else
+		sheetData = Assets.getText("assets/RunnerMark.xml");
+		createScene();
+		#end
+	}
+
+	function ul_complete(e)
+	{
+		sheetData = e.target.data;
 		createScene();
 	}
 
 	function createScene()
 	{
 		var tilesheet:SparrowTilesheet = new SparrowTilesheet(
-			Assets.getBitmapData("assets/RunnerMark.png"), Assets.getText("assets/RunnerMark.xml"));
+			Assets.getBitmapData("assets/RunnerMark.png"), sheetData);
 
 		layer = new TileLayer(tilesheet);
 
