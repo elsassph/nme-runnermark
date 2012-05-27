@@ -11,8 +11,10 @@ Minor twists:
 - for older Android devices you should not target 60fps; my HTC Desire (Nexus One) does a good job with lower targets.
 
 Here are the scores (FPSx10 + ennemies count, **in bold after engine update**):
- - iPad 1: 823
+ - iPhone 3GS: **668**
  - iPod Touch 4: **970**
+ - iPhone 4: 888
+ - iPad 1: **916**
  - iPad 2: **1454**
  - iPad 3: **1454**
  - Nexus One (2.2): 460 (target 58fps), 487 (30fps)
@@ -32,7 +34,6 @@ Here are the scores (FPSx10 + ennemies count, **in bold after engine update**):
 Other point of comparison:
  - APK is 2.4Mb
  - IPA is 1.1Mb
-
 
 **Introducing the TileLayer**
 
