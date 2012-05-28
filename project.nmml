@@ -15,6 +15,7 @@
 	<source path="src" />
 	
 	<haxelib name="nme" />
+	<haxelib name="tilelayer" />
 	
 	<assets path="assets" include="*" exclude="nme.svg" />
 
