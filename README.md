@@ -24,7 +24,7 @@ Here are the scores (FPSx10 + ennemies count, **in bold after engine update**):
  - Samsung Galaxy Ace: 850 (target 30fps)
  - Samsung Galaxy S: 584 (target 58fps), 1073 (30fps)
  - HTC Desire Z (2.3): 869
- - Galaxy Nexus: 909
+ - Galaxy Nexus: **1081**
  - Samsung Galaxy S2 (ICS): **1972**
  - Galaxy Tab 10.1 (3.1, 1.4GHz): 689
  - Xoom (3.1): **923**
