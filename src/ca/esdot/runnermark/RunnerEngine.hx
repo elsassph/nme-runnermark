@@ -4,7 +4,9 @@ import ca.esdot.runnermark.sprites.EnemySprite;
 import ca.esdot.runnermark.sprites.GenericSprite;
 import ca.esdot.runnermark.sprites.RunnerSprite;
 
+import aze.display.TileGroup;
 import aze.display.TileLayer;
+import aze.display.TileSprite;
 import nme.display.Bitmap;
 import nme.display.BitmapData;
 import nme.display.GradientType;

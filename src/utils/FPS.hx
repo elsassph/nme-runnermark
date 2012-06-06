@@ -9,6 +9,7 @@ class FPS extends TextField
 {
    public var fps:Int;
    var prev:Int;
+   var prevScore:Int;
    public var score:Int;
    var times:Array<Float>;
 
@@ -34,9 +35,10 @@ class FPS extends TextField
          times.shift();
       fps = times.length;
       
-      if (visible && prev != fps)
+      if (visible && (prev != fps || prevScore != score))
       {
          prev = fps;
+         prevScore = score;
          htmlText = "FPS: " + fps
             + "<br/>score: " + score;
       }

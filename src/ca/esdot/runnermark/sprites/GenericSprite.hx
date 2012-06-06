@@ -1,6 +1,6 @@
 package ca.esdot.runnermark.sprites;
 
-import aze.display.TileLayer;
+import aze.display.TileClip;
 
 class GenericSprite extends TileClip
 {
