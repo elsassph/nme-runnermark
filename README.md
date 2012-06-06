@@ -1,7 +1,8 @@
 nme-RunnerMark
 ==============
 
-**Performance demonstration**
+Performance demonstration
+-------------------------
 
 First goal was to do a haxe NME port of [esDotDev's RunnerMark][1] for fair comparison of a realistic game scene. 
 
@@ -23,7 +24,7 @@ Here are the scores (FPSx10 + ennemies count, **in bold after engine update**):
  - Samsung Galaxy Ace: 850 (target 30fps)
  - Samsung Galaxy S: 584 (target 58fps), 1073 (30fps)
  - HTC Desire Z (2.3): 869
- - Galaxy Nexus: 909
+ - Galaxy Nexus: **1081**
  - Samsung Galaxy S2 (ICS): **1972**
  - Galaxy Tab 10.1 (3.1, 1.4GHz): 689
  - Xoom (3.1): **923**
@@ -35,7 +36,8 @@ Other point of comparison:
  - APK is 2.4Mb
  - IPA is 1.1Mb
 
-**Introducing the TileLayer**
+Introducing the TileLayer
+-------------------------
 
 Second goal was to create a simple wrapper on haxe NME's Tilesheet which is rather low-level and native-targets orientated. 
 
@@ -43,10 +45,17 @@ Second goal was to create a simple wrapper on haxe NME's Tilesheet which is rath
  - includes a Sparrow spritesheet parser, supporting trimming,
  - uses Bitmaps for Flash & HTML5 target rendering (almost complete) instead of the limited, and a bit slow, drawTriangles fallback.
 
-**HTML5 version**
+**TileLayer is now in haxelib**: 
+- [source (and some doc) on github][4]
+- install the library: `haxelib install tilelayer` in your terminal
+- add `<haxelib name="tilelayer" />` in your nmml
+
+HTML5 version
+-------------
 
 Try NME's HTML5 output: http://philippe.elsass.me/lab/RunnerMark/
 
 [1]:https://github.com/esDotDev/RunnerMark
 [2]:https://github.com/esDotDev/RunnerMark/tree/master/results
 [3]:https://github.com/elsassph/nme-runnermark/downloads
+[4]:https://github.com/elsassph/nme-tilelayer
