@@ -26,6 +26,7 @@ Here are the scores (FPSx10 + ennemies count, **in bold after engine update**):
  - HTC Desire Z (2.3): 869
  - Galaxy Nexus: **1081**
  - Samsung Galaxy S2 (ICS): **1972**
+ - Samsung Galaxy S3: **2119**
  - Galaxy Tab 10.1 (3.1, 1.4GHz): 689
  - Xoom (3.1): **923**
  - TouchPad (ICS): **916**
