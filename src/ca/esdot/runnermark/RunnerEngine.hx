@@ -18,7 +18,6 @@ class RunnerEngine extends Sprite
 {	
 	static inline var SPEED:Float = 0.33;
 	
-	var tilesheet:TilesheetEx;
 	var layer:TileLayer;
 	var _root:TileGroup;
 
