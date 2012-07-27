@@ -13,11 +13,11 @@ Minor twists:
 
 Here are the scores (FPSx10 + ennemies count, **in bold after engine update**):
  - iPhone 3GS: **668**
- - iPod Touch 4: **970**
+ - iPod Touch 4: **978**
  - iPhone 4: 888
  - iPad 1: **916**
- - iPad 2: **1454**
- - iPad 3: **1454**
+ - iPad 2: **3121**
+ - iPad 3: **1454** (debug build)
  - Nexus One (2.2): 460 (target 58fps), 487 (30fps)
  - Nexus One (2.3.7): **470** (target 58fps), **577** (30fps)
  - Motorola Defy: 595 (target 30fps)
@@ -26,6 +26,7 @@ Here are the scores (FPSx10 + ennemies count, **in bold after engine update**):
  - HTC Desire Z (2.3): 869
  - Galaxy Nexus: **1081**
  - Samsung Galaxy S2 (ICS): **1972**
+ - Samsung Galaxy S3: **2119**
  - Galaxy Tab 10.1 (3.1, 1.4GHz): 689
  - Xoom (3.1): **923**
  - TouchPad (ICS): **916**
