@@ -17,7 +17,7 @@ Here are the scores (FPSx10 + ennemies count, **in bold after engine update**):
  - iPhone 4: 888
  - iPad 1: **916**
  - iPad 2: **3121**
- - iPad 3: **1454** (debug build)
+ - iPad 3: **1944**
  - Nexus One (2.2): 460 (target 58fps), 487 (30fps)
  - Nexus One (2.3.7): **470** (target 58fps), **577** (30fps)
  - Motorola Defy: 595 (target 30fps)
