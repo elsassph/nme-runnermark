@@ -4,7 +4,7 @@ nme-RunnerMark
 Performance demonstration
 -------------------------
 
-First goal was to do a haxe NME port of [esDotDev's RunnerMark][1] for fair comparison of a realistic game scene. 
+First goal was to do an NME port of [esDotDev's RunnerMark][1] for fair comparison of a realistic game scene. 
 
 Minor twists: 
 - shows 3 enemies even if it can't reach 58fps,
@@ -40,7 +40,7 @@ Other point of comparison:
 Introducing the TileLayer
 -------------------------
 
-Second goal was to create a simple wrapper on haxe NME's Tilesheet which is rather low-level and native-targets orientated. 
+Second goal was to create a simple wrapper on NME's Tilesheet which is rather low-level and native-targets orientated. 
 
  - provides a basic display-list, spritesheet animations, mirroring,
  - includes a Sparrow spritesheet parser, supporting trimming,
