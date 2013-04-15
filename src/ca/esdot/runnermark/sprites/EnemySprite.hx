@@ -1,10 +1,12 @@
 package ca.esdot.runnermark.sprites;
 
+import aze.display.TileLayer;
+
 class EnemySprite extends GenericSprite
 {
-	public function new(type:String)
+	public function new(layer:TileLayer,type:String)
 	{
-		super(type);
+		super(layer,type);
 	}
 	
 	public function update():Void 

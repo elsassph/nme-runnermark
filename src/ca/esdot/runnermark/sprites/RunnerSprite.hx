@@ -1,12 +1,14 @@
 package ca.esdot.runnermark.sprites;
 
+import aze.display.TileLayer;
+
 class RunnerSprite extends GenericSprite
 {
 	public var enemyList:Array<GenericSprite>;
 
-	public function new(type:String) 
+	public function new(layer:TileLayer,type:String) 
 	{
-		super(type);
+		super(layer,type);
 		//mirror = 1;
 		//scale = 2;
 	}
