@@ -1,6 +1,7 @@
 package ca.esdot.runnermark.sprites;
 
 import aze.display.TileClip;
+import aze.display.TileLayer;
 
 class GenericSprite extends TileClip
 {
@@ -9,9 +10,9 @@ class GenericSprite extends TileClip
 	var isJumping:Bool;
 	var velY:Float;
 
-	public function new(type:String) 
+	public function new(layer:TileLayer, type:String) 
 	{
-		super(type);
+		super(layer,type);
 		gravity = 1;
 		velY = 0;
 	}

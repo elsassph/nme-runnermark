@@ -28,8 +28,14 @@ class RunnerEngine extends Sprite
 	var runner:RunnerSprite;
 	
 	// pools
-	var spritePool:Hash<Array<GenericSprite>>;
-	var tilePool:Hash<Array<TileSprite>>;
+	#if haxe3
+		var spritePool:Map<String,Array<GenericSprite>>;
+		var tilePool:Map<String,Array<TileSprite>>;
+	#else
+		var spritePool:Hash<Array<GenericSprite>>;
+		var tilePool:Hash<Array<TileSprite>>;
+	#end
+	
 	var groundList:Array<TileSprite>;
 	var particleList:Array<TileSprite>;
 	var enemyList:Array<GenericSprite>;
@@ -65,9 +71,15 @@ class RunnerEngine extends Sprite
 		runnerScore = 0;
 		incrementDelay = 250;
 		maxIncrement = 12000;
-
-		spritePool = new Hash<Array<GenericSprite>>();
-		tilePool = new Hash<Array<TileSprite>>();
+		
+		#if haxe3
+			spritePool = new Map<String,Array<GenericSprite>>();
+			tilePool = new Map<String,Array<TileSprite>>();
+		#else
+			spritePool = new Hash<Array<GenericSprite>>();
+			tilePool = new Hash<Array<TileSprite>>();
+		#end
+		
 		groundList = new Array<TileSprite>();
 		particleList = new Array<TileSprite>();
 		enemyList = new Array<GenericSprite>();
@@ -126,11 +138,11 @@ class RunnerEngine extends Sprite
 		var bitmap1, bitmap2;
 
 		//BG Strip 1
-		bgStrip1 = new TileGroup();
-		bitmap1 =  new TileSprite("bg1");
+		bgStrip1 = new TileGroup(layer);
+		bitmap1 =  new TileSprite(layer,"bg1");
 		bitmap1.scale = 2;
 		bgStrip1.addChild(bitmap1);
-		bitmap2 = new TileSprite("bg1");
+		bitmap2 = new TileSprite(layer,"bg1");
 		bitmap2.scale = 2;
 		bgStrip1.addChild(bitmap2);
 		_root.addChild(bgStrip1);
@@ -138,11 +150,11 @@ class RunnerEngine extends Sprite
 		bitmap2.x = bitmap1.x + bitmap1.width;
 		
 		//BG Strip 2
-		bgStrip2 = new TileGroup();
-		bitmap1 =  new TileSprite("bg2");
+		bgStrip2 = new TileGroup(layer);
+		bitmap1 =  new TileSprite(layer,"bg2");
 		bitmap1.scale = 2;
 		bgStrip2.addChild(bitmap1);
-		bitmap2 = new TileSprite("bg2");
+		bitmap2 = new TileSprite(layer,"bg2");
 		bitmap2.scale = 2;
 		bgStrip2.addChild(bitmap2);
 		_root.addChild(bgStrip2);
@@ -150,7 +162,7 @@ class RunnerEngine extends Sprite
 		bitmap2.x = bitmap1.x + bitmap1.width;
 		
 		//Runner
-		runner = new RunnerSprite("Runner");
+		runner = new RunnerSprite(layer,"Runner");
 		_root.addChild(runner);
 	}
 	
@@ -158,7 +170,7 @@ class RunnerEngine extends Sprite
 	{
 		var sprite:TileSprite = getTile("ground");
 		if (sprite == null)
-			sprite = new TileSprite("ground");
+			sprite = new TileSprite(layer,"ground");
 		
 		_root.addChildAt(sprite, _root.getChildIndex(bgStrip2) + 1);
 		return sprite; 
@@ -168,7 +180,7 @@ class RunnerEngine extends Sprite
 	{
 		var sprite:TileSprite = getTile("cloud");
 		if (sprite == null)
-			sprite = new TileSprite("cloud");
+			sprite = new TileSprite(layer,"cloud");
 		
 		_root.addChild(sprite);
 		return sprite;
@@ -178,7 +190,7 @@ class RunnerEngine extends Sprite
 	{
 		var sprite:EnemySprite = cast getSprite("Enemy");
 		if (sprite == null)
-			sprite = new EnemySprite("Enemy");
+			sprite = new EnemySprite(layer, "Enemy");
 		sprite.scale = 0.6 + 0.4 * Math.random();
 		sprite.mirror = Math.random() > 0.5 ? 1 : 0;
 		_root.addChildAt(sprite, _root.getChildIndex(runner) - 1);
