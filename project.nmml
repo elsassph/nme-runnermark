@@ -5,7 +5,7 @@
 	
 	<app main="RunnerMark" file="RunnerMark" path="bin" />
 	
-	<window background="#000000" />
+	<window background="#333333" />
 	<window width="800" height="480" unless="mobile" />
 	<window orientation="landscape" vsync="true" if="mobile" />
 	
@@ -13,6 +13,7 @@
 	<window fps="62" if="desktop" />
 	
 	<source path="src" />
+	<source path="C:\dev\haxe\libraries\nme-tilelayer\haxelib" />
 	
 	<haxelib name="nme" />
 	<haxelib name="tilelayer" />

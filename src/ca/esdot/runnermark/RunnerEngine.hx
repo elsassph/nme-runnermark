@@ -58,6 +58,7 @@ class RunnerEngine extends Sprite
 		
 		this.layer = layer;
 		_root = layer;
+		GenericSprite.layer = layer;
 
 		lastIncrement = Lib.getTimer() + 2000;
 		fps = -1;
@@ -126,28 +127,28 @@ class RunnerEngine extends Sprite
 		var bitmap1, bitmap2;
 
 		//BG Strip 1
-		bgStrip1 = new TileGroup();
-		bitmap1 =  new TileSprite("bg1");
+		bgStrip1 = new TileGroup(layer);
+		bitmap1 =  new TileSprite(layer, "bg1");
 		bitmap1.scale = 2;
-		bgStrip1.addChild(bitmap1);
-		bitmap2 = new TileSprite("bg1");
+		bitmap2 = new TileSprite(layer, "bg1");
 		bitmap2.scale = 2;
+		bitmap1.x = bitmap1.width / 2;
+		bitmap2.x = bitmap1.x + bitmap1.width;
+		bgStrip1.addChild(bitmap1);
 		bgStrip1.addChild(bitmap2);
 		_root.addChild(bgStrip1);
-		bitmap1.x = bitmap1.width / 2;
-		bitmap2.x = bitmap1.x + bitmap1.width;
 		
 		//BG Strip 2
-		bgStrip2 = new TileGroup();
-		bitmap1 =  new TileSprite("bg2");
+		bgStrip2 = new TileGroup(layer);
+		bitmap1 =  new TileSprite(layer, "bg2");
 		bitmap1.scale = 2;
-		bgStrip2.addChild(bitmap1);
-		bitmap2 = new TileSprite("bg2");
+		bitmap2 = new TileSprite(layer, "bg2");
 		bitmap2.scale = 2;
-		bgStrip2.addChild(bitmap2);
-		_root.addChild(bgStrip2);
 		bitmap1.x = bitmap1.width / 2;
 		bitmap2.x = bitmap1.x + bitmap1.width;
+		bgStrip2.addChild(bitmap1);
+		bgStrip2.addChild(bitmap2);
+		_root.addChild(bgStrip2);
 		
 		//Runner
 		runner = new RunnerSprite("Runner");
@@ -158,7 +159,7 @@ class RunnerEngine extends Sprite
 	{
 		var sprite:TileSprite = getTile("ground");
 		if (sprite == null)
-			sprite = new TileSprite("ground");
+			sprite = new TileSprite(layer, "ground");
 		
 		_root.addChildAt(sprite, _root.getChildIndex(bgStrip2) + 1);
 		return sprite; 
@@ -168,7 +169,7 @@ class RunnerEngine extends Sprite
 	{
 		var sprite:TileSprite = getTile("cloud");
 		if (sprite == null)
-			sprite = new TileSprite("cloud");
+			sprite = new TileSprite(layer, "cloud");
 		
 		_root.addChild(sprite);
 		return sprite;

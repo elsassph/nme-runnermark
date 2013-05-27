@@ -1,4 +1,6 @@
 package ca.esdot.runnermark.sprites;
+import aze.display.TileSprite;
+import nme.Memory;
 
 class EnemySprite extends GenericSprite
 {
@@ -21,6 +23,5 @@ class EnemySprite extends GenericSprite
 			velY = -height * .25;
 			isJumping = true;
 		}
-		
 	}
 }

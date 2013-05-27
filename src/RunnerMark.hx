@@ -1,6 +1,8 @@
 package;
 
 import ca.esdot.runnermark.RunnerEngine;
+import nme.display.Shape;
+import nme.geom.Point;
 
 import aze.display.TileLayer;
 import aze.display.SparrowTilesheet;
@@ -59,7 +61,7 @@ class RunnerMark extends Sprite
 
 		#if js
 		// workaround for binary data loading bug in html5
-		var ul:URLLoader = new URLLoader(new URLRequest("assets/RunnerMark.xml")); 
+		var ul = new URLLoader(new URLRequest("assets/RunnerMark.xml")); 
 		ul.addEventListener(Event.COMPLETE, ul_complete);
 		#else
 		sheetData = Assets.getText("assets/RunnerMark.xml");
@@ -75,17 +77,26 @@ class RunnerMark extends Sprite
 
 	function createScene()
 	{
+		/* 
+		 * Uncomment the Assets.getBitmapData(... line to switch the texture quality.
+		 * You would decide this depending on the device resolution.
+		 * 
+		 * Notes:
+		 * - when using texture scaling, make sure (TexturePackate allows it) to place elements at coordinates 
+		 * 	 which are multiples of the scale factor (ie. a x2 factor means even coordinates)
+		 */
 		var tilesheet:SparrowTilesheet = new SparrowTilesheet(
+			//Assets.getBitmapData("assets/RunnerMark-low.png"), sheetData, 2);
 			Assets.getBitmapData("assets/RunnerMark.png"), sheetData);
-
-		layer = new TileLayer(tilesheet);
-
+		
 		RunnerEngine.targetFPS = 58; // score = FPS*10 + ennemies.length
-
+		
+		layer = new TileLayer(tilesheet);
+		
 		engine = new RunnerEngine(layer, stageWidth, stageHeight);
 		engine.onComplete = onEngineComplete;
 		addChild(engine);
-
+		
 		prevTime = Lib.getTimer();
 		createStats();
 		addEventListener(Event.ENTER_FRAME, onEnterFrame);
