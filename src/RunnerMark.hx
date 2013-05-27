@@ -83,10 +83,11 @@ class RunnerMark extends Sprite
 		 * 
 		 * Notes:
 		 * - when using texture scaling, make sure (TexturePackate allows it) to place elements at coordinates 
-		 * 	 which are multiples of the scale factor (ie. a x2 factor means even coordinates)
+		 * 	 which are multiples of 1/scale factor (ie. a x0.5 factor means even coordinates)
 		 */
 		var tilesheet:SparrowTilesheet = new SparrowTilesheet(
-			//Assets.getBitmapData("assets/RunnerMark-low.png"), sheetData, 2);
+			//Assets.getBitmapData("assets/RunnerMark-high.png"), sheetData, 2);
+			//Assets.getBitmapData("assets/RunnerMark-low.png"), sheetData, 0.5);
 			Assets.getBitmapData("assets/RunnerMark.png"), sheetData);
 		
 		RunnerEngine.targetFPS = 58; // score = FPS*10 + ennemies.length
