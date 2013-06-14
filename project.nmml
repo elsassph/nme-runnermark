@@ -25,10 +25,13 @@
 	<ndll name="std" />
 	<ndll name="regexp" />
 	<ndll name="zlib" />
-	<ndll name="nme" haxelib="nme" />
 
 	<!-- optimize JS output -->
-	<haxeflag name="--dead-code-elimination" if="html5" />
-	<haxeflag name="--js-modern" if="html5" />
-	
+	<section if="haxe2">
+		<haxeflag name="--dead-code-elimination" if="haxe2" />
+		<haxeflag name="--js-modern" if="html5" />
+	</section>	
+	<section if="haxe3">
+		<haxeflag name="-dce=std" if="haxe3" />
+	</section>
 </project>

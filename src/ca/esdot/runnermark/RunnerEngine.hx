@@ -332,8 +332,8 @@ class RunnerEngine extends Sprite
 		for (i in 0...numPieces)
 		{
 			piece = createGroundPiece(); 
-			piece.y = groundY + piece.height/2 - height;
-			piece.x = lastX + piece.width/2;
+			piece.y = groundY + piece.height / 2 - height;
+			piece.x = lastX + piece.width / 2;
 			lastX += Std.int(piece.width/2 - 1);
 			groundList.push(piece);
 		}
